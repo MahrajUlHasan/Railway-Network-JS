@@ -1,18 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
-<link rel="stylesheet" href="index.css">
+<html data-theme="cupcake" lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>"Railway-Network"</title>
+    <title>Railways Game Menu</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css" rel="stylesheet">
+    <style>
+        .game-grid {
+            background-size: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: calc(100vh - 250px);
+            height: calc(100vh - 250px);
+            display: grid;
+        }
+
+        .game-cell {
+            position: relative;
+        }
+
+        .game-cell img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 1;
+        }
+
+        img.rotate-90 {
+            transform: rotate(90deg);
+        }
+
+        img.rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        img.rotate-270 {
+            transform: rotate(270deg);
+        }
+    </style>
 </head>
 
-<body>
-    <h1 id="text-3xl flex flex-row">Railway-Network</h1>
-    <script src="index.js"></script>
-</body>
+<body class="bg-base-200 flex flex-col items-center justify-center min-h-screen">
+    <div id="menu" class="text-center">
+        <h1 class="text-5xl font-bold mb-8">RAILWAYS</h1>
+        <input id="player-name-input" type="text" placeholder="WHO ARE YOU?"
+            class="input input-bordered w-full max-w-xs mb-8" oninput="checkFormValidity()" />
+        <div class="mb-8">
+            <h2 class="text-2xl mb-4">SET THE DIFFICULTY!</h2>
+            <div class="flex justify-center space-x-4">
+                <button id="5x5" class="btn btn-outline" onclick="selectDifficulty('5x5')">5 X 5</button>
+                <button id="7x7" class="btn btn-outline" onclick="selectDifficulty('7x7')">7 X 7</button>
+            </div>
+            <div class="text-lg mt-4"> Selected Difficulty: <span id="selected-difficulty">None</span> </div>
+        </div>
+        <div class="flex justify-center space-x-4">
+            <button class="btn btn-outline" onclick="showRules()">RULES</button>
+            <button id="start-game" class="btn btn-primary" onclick="startGame()" disabled>START GAME</button>
+        </div>
+    </div>
 
-</html>
+    <div id="leaderboard" class="overflow-x-auto p-3">
+        <h2 class="text-2xl secondary flex justify-center">LEADERBOARD</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Time</th>
+                    <th>Difficulty</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="game-screen" class="hidden flex flex-col items-center justify-center w-full">
+        <h1 class="text-5xl font-bold mb-8 p-4">RAILWAYS</h1>
+        <div class="w-full flex justify-around items-center mb-8">
+            <div class="text-left p-4 secondary rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold  primary">PLAYER: <span id="player-name"></span></h2>
+                <h3 class="text-xl">ELAPSED TIME: <span id="elapsed-time">0:00</span></h3>
+            </div>
+            <!-- <img src="railway-track.png" alt="Railway Track" class="w-1/3 max-w-md"> -->
+        </div>
+        <div id="grid" class="game-grid"></div>
+        <div id="footer" class="max-w-md p-4">
+            <button class="btn btn-outline mt-4 " onclick="backToMenu()">BACK</button>
+            <button class="btn btn-outline">RULES</button>
+            <button class="btn btn-outline btn-primary" onclick="checkCompletion()">CHECK</button>
+        </div>
+    </div>
+
+    <div id="rules" class="hidden text-center">
+        <h1 class="text-5xl font-bold mb-8">RULES</h1>
+        <ul class="list-disc text-left mx-auto max-w-md">
+
+            <h1 id="text-5xl font-bold primary"><strong>How to play</strong></h1>
+            <li class="mb-4">
+                You play the game by pressing the tiles in the image and it will cycle through all the possible rail
+                parts you can put on it. To complete the game you all the tiles have to have rails on them except the
+                oasis tiles and all the rails have to form a continiuos loop. <strong>You can see the leaderboard when
+                    you finish the game once</strong>
+            </li>
+            <li class="mb-4">
+                <strong class="font-bold">Empty Cell:</strong> You can place any tile on an empty cell.
+                <img src='starter_eng/pics/tiles/empty.png' alt="Empty Cell" class="mx-auto my-2">
+            </li>
+            <li class="mb-4">
+                <strong class="font-bold">Bridge:</strong> You can only place straight tiles on a bridge.
+                <img src='starter_eng/pics/tiles/bridge.png' alt="Bridge" class="mx-auto my-2">
+            </li>
+            <li class="mb-4">
+                <strong class="font-bold">Mountain:</strong> You can only place tiles at a 90-degree angle on a
+                mountain.
+                <img src='starter_eng/pics/tiles/mountain.png' alt="Mountain" class="mx-auto my-2">
+            </li>
+            <li class="mb-4">
+                <strong class="font-bold">Oasis:</strong> You cannot place any tiles on an oasis.
+                <img src='starter_eng/pics/tiles/oasis.png' alt="Oasis" class="mx-auto my-2">
+            </li>
+        </ul>
+        <button class="btn btn-outline mt-8 p-3" onclick="hideRules()">Back to Menu</button>
+    </div>
+    <script src="index.js">
+    </script>
