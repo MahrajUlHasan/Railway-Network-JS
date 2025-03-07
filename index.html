@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="cupcake" lang="en">
+<html data-theme="dark" lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -15,6 +15,8 @@
             width: calc(100vh - 250px);
             height: calc(100vh - 250px);
             display: grid;
+            flex-grow: 1;
+
         }
 
         .game-cell {
@@ -52,18 +54,20 @@
         <div class="mb-8">
             <h2 class="text-2xl mb-4">SET THE DIFFICULTY!</h2>
             <div class="flex justify-center space-x-4">
-                <button id="5x5" class="btn btn-outline" onclick="selectDifficulty('5x5')">5 X 5</button>
-                <button id="7x7" class="btn btn-outline" onclick="selectDifficulty('7x7')">7 X 7</button>
+                <button id="button-5x5" class="btn btn-outline" data-difficulty='5x5'>5 X 5</button>
+                <button id="button-7x7" class="btn btn-outline" data-difficulty='7x7'>7 X 7</button>
             </div>
             <div class="text-lg mt-4"> Selected Difficulty: <span id="selected-difficulty">None</span> </div>
         </div>
         <div class="flex justify-center space-x-4">
-            <button class="btn btn-outline" onclick="showRules()">RULES</button>
-            <button id="start-game" class="btn btn-primary" onclick="startGame()" disabled>START GAME</button>
+            <button id="rules-button-menu" class="btn btn-outline">RULES</button>
+            <button id="start-game" class="btn btn-primary" disabled>START GAME</button>
         </div>
     </div>
 
-    <div id="leaderboard" class="overflow-x-auto p-3">
+    <div id="game-container" class="hidden flex w-full h-full"> </div>
+
+    <div id="leaderboard" class="flex flex-col items-center h-full p-4">
         <h2 class="text-2xl secondary flex justify-center">LEADERBOARD</h2>
         <table class="table">
             <thead>
@@ -79,8 +83,8 @@
         </table>
     </div>
 
-    <div id="game-screen" class="hidden flex flex-col items-center justify-center w-full">
-        <h1 class="text-5xl font-bold mb-8 p-4">RAILWAYS</h1>
+    <div id="game-screen" class="hidden flex flex-col items-center justify-center w-2/3 h-full">
+        <h1 class="text-5xl font-bold mb-4 p-2">RAILWAYS</h1>
         <div class="w-full flex justify-around items-center mb-8">
             <div class="text-left p-4 secondary rounded-lg shadow-md">
                 <h2 class="text-2xl font-bold  primary">PLAYER: <span id="player-name"></span></h2>
@@ -90,9 +94,9 @@
         </div>
         <div id="grid" class="game-grid"></div>
         <div id="footer" class="max-w-md p-4">
-            <button class="btn btn-outline mt-4 " onclick="backToMenu()">BACK</button>
-            <button class="btn btn-outline" onclick="showRules()">RULES</button>
-            <button class="btn btn-outline btn-primary" onclick="checkCompletion()">CHECK</button>
+            <button id="back-to-menu" class="btn btn-outline mt-4 ">BACK</button>
+            <button id="rules-button-game" class="btn btn-outline">RULES</button>
+            <button id="check-button" class="btn btn-outline btn-primary">CHECK</button>
         </div>
     </div>
 
@@ -125,7 +129,16 @@
                 <img src='starter_eng/pics/tiles/oasis.png' alt="Oasis" class="mx-auto my-2">
             </li>
         </ul>
-        <button class="btn btn-outline mt-8 p-3" onclick="hideRules()">Back to Menu</button>
+        <button id="back-to-menu-rules-button" class="btn btn-outline mt-8 p-3">Back to Menue</button>
+        <button id="back-to-game-button" class="btn btn-outline mt-8 p-3">Back to Game</button>
+    </div>
+    <div id="win-screen"
+        class="hidden fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-black p-8 rounded-lg shadow-lg text-center">
+            <h2 class="text-3xl font-bold secondary mb-4">You Win!</h2>
+            <p id="win-message" class="mb-6"></p> <button id="back-to-menu-win" class="btn btn-primary">Back to
+                Menu</button>
+        </div>
     </div>
     <script src="index.js">
     </script>
